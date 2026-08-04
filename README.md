@@ -16,6 +16,16 @@ The modern open-source platform for golf tournaments, live scoring, leaderboards
 - 🏆 Season standings (Order of Merit)
 - 🔔 Notifications
 
+### Live Scoring
+- ⛳ Hole-by-hole score entry
+- 🎯 Multiple formats (Stroke Play, Stableford, Scramble, Match Play)
+- 🏅 Automatic net score calculation (handicap-adjusted)
+- 🎮 Side games (Skins, Nearest to Pin, Longest Drive)
+- 📶 Offline mode with auto-sync
+- 📸 Photo per hole
+- ✅ Score confirmation by playing partner
+- 🔔 Live push notifications on leaderboard changes
+
 ### Social Rounds
 - 🤝 Invite friends for a round
 - 📅 Propose a date/time and let friends vote/confirm
