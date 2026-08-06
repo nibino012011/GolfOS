@@ -1,67 +1,82 @@
+"use client";
+
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
+
 export default function Home() {
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+  const [format, setFormat] = useState("");
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setMessage("Wird gespeichert...");
+
+    const { error } = await supabase.from("tournaments").insert({
+      name,
+      location,
+      date,
+      format,
+    });
+
+    if (error) {
+      setMessage("Fehler: " + error.message);
+    } else {
+      setMessage("Turnier gespeichert! ✅");
+      setName("");
+      setLocation("");
+      setDate("");
+      setFormat("");
+    }
+  }
+
   return (
-    <main className="min-h-screen bg-black text-white">
-      <nav className="flex items-center justify-between px-8 py-6 border-b border-zinc-800">
-        <h1 className="text-3xl font-bold text-emerald-400">GolfOS</h1>
+    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-20">
+      <h1 className="text-4xl font-bold mb-8">⛳ Neues Turnier anlegen</h1>
 
-        <div className="space-x-6">
-          <a href="#" className="hover:text-emerald-400">
-            Features
-          </a>
-          <a href="#" className="hover:text-emerald-400">
-            Docs
-          </a>
-          <a href="#" className="hover:text-emerald-400">
-            GitHub
-          </a>
-        </div>
-      </nav>
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col gap-4 w-full max-w-sm"
+      >
+        <input
+          type="text"
+          placeholder="Turniername"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="bg-gray-900 rounded-lg p-3 text-white"
+        />
+        <input
+          type="text"
+          placeholder="Ort"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="bg-gray-900 rounded-lg p-3 text-white"
+        />
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          className="bg-gray-900 rounded-lg p-3 text-white"
+        />
+        <input
+          type="text"
+          placeholder="Format (z.B. Stroke Play)"
+          value={format}
+          onChange={(e) => setFormat(e.target.value)}
+          className="bg-gray-900 rounded-lg p-3 text-white"
+        />
+        <button
+          type="submit"
+          className="bg-white text-black rounded-lg p-3 font-semibold"
+        >
+          Turnier speichern
+        </button>
+      </form>
 
-      <section className="max-w-6xl mx-auto text-center py-32 px-8">
-        <h2 className="text-6xl font-bold">
-          The Open-Source Platform
-          <br />
-          for Golf Tournaments
-        </h2>
-
-        <p className="text-zinc-400 text-xl mt-8 max-w-3xl mx-auto">
-          Create tournaments, manage players, enter live scores and display
-          beautiful real-time leaderboards.
-        </p>
-
-        <div className="mt-12 flex justify-center gap-6">
-          <button className="bg-emerald-500 hover:bg-emerald-600 px-8 py-4 rounded-xl text-lg">
-            Get Started
-          </button>
-
-          <button className="border border-zinc-700 px-8 py-4 rounded-xl hover:bg-zinc-900">
-            View on GitHub
-          </button>
-        </div>
-      </section>
-
-      <section className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-8 pb-32">
-        <div className="bg-zinc-900 rounded-2xl p-8">
-          <h3 className="text-2xl font-semibold">🏆 Tournaments</h3>
-          <p className="mt-4 text-zinc-400">
-            Create and manage golf tournaments with ease.
-          </p>
-        </div>
-
-        <div className="bg-zinc-900 rounded-2xl p-8">
-          <h3 className="text-2xl font-semibold">📱 Live Scoring</h3>
-          <p className="mt-4 text-zinc-400">
-            Players can submit scores hole by hole.
-          </p>
-        </div>
-
-        <div className="bg-zinc-900 rounded-2xl p-8">
-          <h3 className="text-2xl font-semibold">📊 Leaderboards</h3>
-          <p className="mt-4 text-zinc-400">
-            Beautiful live rankings for every tournament.
-          </p>
-        </div>
-      </section>
+      {message && <p className="mt-6 text-gray-400">{message}</p>}
     </main>
   );
 }
