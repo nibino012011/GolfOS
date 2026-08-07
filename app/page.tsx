@@ -1,82 +1,37 @@
-"use client";
-
-import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
-  const [name, setName] = useState("");
-  const [location, setLocation] = useState("");
-  const [date, setDate] = useState("");
-  const [format, setFormat] = useState("");
-  const [message, setMessage] = useState("");
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setMessage("Wird gespeichert...");
-
-    const { error } = await supabase.from("tournaments").insert({
-      name,
-      location,
-      date,
-      format,
-    });
-
-    if (error) {
-      setMessage("Fehler: " + error.message);
-    } else {
-      setMessage("Turnier gespeichert! ✅");
-      setName("");
-      setLocation("");
-      setDate("");
-      setFormat("");
-    }
-  }
-
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 py-20">
-      <h1 className="text-4xl font-bold mb-8">⛳ Neues Turnier anlegen</h1>
+    <main className="relative min-h-screen overflow-hidden flex items-center">
+      <div className="absolute inset-0">
+        <Image
+          src="/images/hero.jpg"
+          alt="Golfplatz bei Sonnenaufgang"
+          fill
+          priority
+          className="object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-canvas)] via-[var(--color-canvas)]/70 to-transparent" />
+      </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-4 w-full max-w-sm"
-      >
-        <input
-          type="text"
-          placeholder="Turniername"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-          className="bg-gray-900 rounded-lg p-3 text-white"
-        />
-        <input
-          type="text"
-          placeholder="Ort"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="bg-gray-900 rounded-lg p-3 text-white"
-        />
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="bg-gray-900 rounded-lg p-3 text-white"
-        />
-        <input
-          type="text"
-          placeholder="Format (z.B. Stroke Play)"
-          value={format}
-          onChange={(e) => setFormat(e.target.value)}
-          className="bg-gray-900 rounded-lg p-3 text-white"
-        />
-        <button
-          type="submit"
-          className="bg-white text-black rounded-lg p-3 font-semibold"
-        >
-          Turnier speichern
-        </button>
-      </form>
+      <div className="relative z-10 max-w-4xl mx-auto px-6 py-32 flex flex-col items-center text-center">
+        <span className="eyebrow mb-6">⛳ GolfOS</span>
+        <h1 className="font-display text-5xl sm:text-7xl font-medium leading-[1.05] mb-6">
+          Der Platz ruft.
+          <br />
+          Wir kümmern uns um den Rest.
+        </h1>
+        <p className="text-lg text-[var(--color-mist-dim)] max-w-xl mb-10">
+          Turniere anlegen, Live-Scores verfolgen und Ranglisten führen —
+          alles an einem Ort, gebaut für Golfer.
+        </p>
+        <Link href="/login" className="btn-primary">
+          Einloggen
+        </Link>
+      </div>
 
-      {message && <p className="mt-6 text-gray-400">{message}</p>}
+      <div className="golf-ball absolute -right-10 top-1/3 hidden lg:block" />
     </main>
   );
 }
